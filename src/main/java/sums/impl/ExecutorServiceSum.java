@@ -38,7 +38,7 @@ public class ExecutorServiceSum {
             try {
                 return x.get();
             } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException("cannot get dates from Future element.",e);
+                throw new RuntimeException("cannot get dates from Future element.", e);
             }
         }).reduce(Integer::sum).orElse(0);
         executor.shutdown();
