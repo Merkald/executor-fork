@@ -8,7 +8,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class ExecutorServiceSum{
+public class ExecutorServiceSum {
+    private final int MIN_ELEMENTS = 1000;
     private final List<Callable<Integer>> callableTasks;
     private final List<Integer> list;
 
@@ -18,11 +19,11 @@ public class ExecutorServiceSum{
     }
 
     private List<Callable<Integer>> listOfThreads() {
-        if (list.size() > 1000) {
+        if (list.size() > MIN_ELEMENTS) {
             List<Callable<Integer>> listCallabels = new ArrayList<>();
-            int nunmOfElem = list.size() / numOfThreads();
+            int numOfElements = list.size() / numOfThreads();
             for (int i = 0; i < numOfThreads(); i++) {
-                listCallabels.add(getCallable(i * nunmOfElem, i * nunmOfElem + nunmOfElem));
+                listCallabels.add(getCallable(i * numOfElements, i * numOfElements + numOfElements));
             }
             return listCallabels;
         } else {
@@ -31,15 +32,14 @@ public class ExecutorServiceSum{
     }
 
     public int sum() throws InterruptedException {
-        ExecutorService executor = Executors.newFixedThreadPool(list.size()/1000);
+        ExecutorService executor = Executors.newFixedThreadPool(list.size() / MIN_ELEMENTS);
         List<Future<Integer>> result = executor.invokeAll(callableTasks);
         int sum = result.stream().map(x -> {
             try {
                 return x.get();
             } catch (InterruptedException | ExecutionException e) {
-                e.printStackTrace();
+                throw new RuntimeException("cannot get dates from Future element.",e);
             }
-            return 0;
         }).reduce(Integer::sum).orElse(0);
         executor.shutdown();
         return sum;
@@ -51,6 +51,6 @@ public class ExecutorServiceSum{
     }
 
     private int numOfThreads() {
-        return list.size() / 1000;
+        return list.size() / MIN_ELEMENTS;
     }
 }

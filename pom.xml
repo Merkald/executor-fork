@@ -7,6 +7,4 @@
     <groupId>org.example</groupId>
     <artifactId>executor-fork</artifactId>
     <version>1.0-SNAPSHOT</version>
-
-
 </project>

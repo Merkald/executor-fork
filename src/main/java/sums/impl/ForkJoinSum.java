@@ -1,4 +1,5 @@
 package sums.impl;
+
 import java.util.List;
 import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
@@ -9,7 +10,7 @@ public class ForkJoinSum extends RecursiveTask<Integer> {
 
     public ForkJoinSum(List<Integer> list, int num) {
         this.list = list;
-        threshold=list.size()/num;
+        threshold = list.size() / num;
     }
 
     private ForkJoinSum(List<Integer> list) {
